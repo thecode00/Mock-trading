@@ -1,0 +1,15 @@
+body {
+    background-color: black;
+}
+section {
+    border: 1px solid whitesmoke;
+    border-radius: 36px;
+    margin: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+form{
+    display: flex;
+        flex-direction: column;
+}
