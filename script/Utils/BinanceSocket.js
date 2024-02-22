@@ -9,6 +9,7 @@ export class BinanceSocket {
 	}
 
 	connect() {
+		const p = document.getElementById("test");
 		this.ws.close();
 		this.ws = new WebSocket(
 			`wss://stream.binance.com:9443/ws/${this.ticker}usdt@trade`
@@ -16,6 +17,7 @@ export class BinanceSocket {
 		this.ws.onmessage = (msg) => {
 			const json = JSON.parse(msg.data);
 			console.log(json);
+			p.innerText = json.p;
 		};
 	}
 
