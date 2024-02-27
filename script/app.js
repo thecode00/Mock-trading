@@ -2,6 +2,10 @@ import { OrderItem } from "./OrderItem.js";
 import { OrderList } from "./OrderList.js";
 import { BinanceSocket } from "./Utils/BinanceSocket.js";
 
+const ORDER_OPEN = "order";
+const ORDER_POSITION = "position";
+
+// TODO: app클래스로 만들기
 const socket = new BinanceSocket("btc");
 const changeTickerButton = document.getElementById("change-ticker-button");
 
@@ -26,6 +30,8 @@ orderForm.addEventListener("submit", (event) => {
 	const targetPrice = orderForm.querySelector("#price-input").value;
 	const margin = orderForm.querySelector("#margin-input").value;
 	console.log(targetPrice, margin);
-
-	openOrderList.lists.push(new OrderItem(targetPrice, margin, "BtC", 1));
+	// 주문 상황별로 바꾸기
+	openOrderList.lists.push(
+		new OrderItem(targetPrice, margin, "BtC", 1, ORDER_POSITION)
+	);
 });
