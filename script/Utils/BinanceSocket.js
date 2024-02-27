@@ -9,14 +9,16 @@ export class BinanceSocket {
 	}
 
 	connect() {
-		const p = document.getElementById("test");
+		const p = document.getElementById("ticker-price");
 		this.ws.close();
 		this.ws = new WebSocket(
 			`wss://stream.binance.com:9443/ws/${this.ticker}usdt@trade`
 		);
+		console.log(
+			`wss://stream.binance.com:9443/ws/${this.ticker}usdt@trade`
+		);
 		this.ws.onmessage = (msg) => {
 			const json = JSON.parse(msg.data);
-			console.log(json);
 			p.innerText = json.p;
 		};
 	}
