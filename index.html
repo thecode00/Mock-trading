@@ -9,21 +9,44 @@
 			integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
 			crossorigin="anonymous"
 		/>
+		<link rel="stylesheet" href="assets/styles/index.css" />
 
 		<title>Mock crypto trading</title>
 		<script defer src="script/app.js" type="module"></script>
 	</head>
 	<body>
+		<template id="order-item-template">
+			<div>
+				<div>
+					<p>Price</p>
+					<p id="t-order-price"></p>
+				</div>
+				<div>
+					<p>Amount</p>
+					<p id="t-order-amount"></p>
+				</div>
+				<div>
+					<button id="t-order-button">Cancel</button>
+				</div>
+			</div>
+		</template>
 		<section class="container">
-			<h1>BTC</h1>
-			<h1 id="test"></h1>
-			<input type="text" />
+			<h1 id="ticker-h1">BTC</h1>
+			<h1 id="ticker-price"></h1>
+			<input
+				type="text"
+				placeholder="Enter ticker..."
+				id="change-ticker-input"
+			/>
+			<button id="change-ticker-button" class="btn-primary">
+				Change Ticker
+			</button>
 		</section>
 
 		<section class="container">
 			<!-- 반응형 검색 넣기 -->
 			<!-- Css 트위터 그 컴포넌트 라이브러리 쓰기 -->
-			<form>
+			<form id="order-form">
 				<label for="price-input">Price</label>
 				<div class="input-group mb-3">
 					<span class="input-group-text">$</span>
