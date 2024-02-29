@@ -32,6 +32,14 @@ orderForm.addEventListener("submit", (event) => {
 	console.log(targetPrice, margin);
 	// 주문 상황별로 바꾸기
 	openOrderList.lists.push(
-		new OrderItem(targetPrice, margin, "BtC", 1, ORDER_POSITION)
+		new OrderItem(
+			targetPrice,
+			margin,
+			"BtC",
+			1,
+			ORDER_OPEN,
+			openOrderList,
+			openPositionList
+		)
 	);
 });
