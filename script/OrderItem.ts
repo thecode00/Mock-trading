@@ -28,7 +28,8 @@ export class OrderItem {
 
 	cancel() {}
 
-	test = () => {
+	test = (event) => {
+		console.log(event);
 		console.log(1, this.stage, ORDER_OPEN);
 		if (this.stage === ORDER_OPEN) {
 			console.log(2);
