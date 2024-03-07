@@ -55,7 +55,6 @@ export class OrderItem {
 			true
 		) as DocumentFragment;
 
-		// 타입 추론을 통해 TypeScript가 타입을 유추하도록 합니다.
 		(clone.querySelector("div") as HTMLDivElement).id = this.id;
 		const templatePrice = clone.getElementById(
 			"t-order-price"
