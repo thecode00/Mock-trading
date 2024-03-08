@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderItem = void 0;
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
-class OrderItem {
+export class OrderItem {
     constructor(orderPrice, margin, ticker, orderType, stage, curList, nextList) {
         this.id = new Date().toString();
         this.test = (event) => {
@@ -43,4 +40,3 @@ class OrderItem {
         parent.append(clone);
     }
 }
-exports.OrderItem = OrderItem;

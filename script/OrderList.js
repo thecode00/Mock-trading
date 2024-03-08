@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderList = void 0;
-class OrderList {
+export class OrderList {
     constructor(type) {
         this.lists = [];
         this.type = type;
@@ -13,4 +10,3 @@ class OrderList {
         console.log(nextList.lists);
     }
 }
-exports.OrderList = OrderList;

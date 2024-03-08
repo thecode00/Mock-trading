@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.BinanceSocket = void 0;
-class BinanceSocket {
+export class BinanceSocket {
     constructor(ticker) {
         this.ws = new WebSocket(`wss://stream.binance.com:9443/ws/btcusdt@trade`);
         this.ticker = ticker;
@@ -23,4 +20,3 @@ class BinanceSocket {
         this.connect();
     }
 }
-exports.BinanceSocket = BinanceSocket;
