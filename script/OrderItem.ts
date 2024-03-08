@@ -16,7 +16,7 @@ export class OrderItem {
 		orderPrice: number,
 		margin: number,
 		ticker: string,
-		orderType: number,
+		orderType: 0 | 1,
 		stage: string,
 		curList: OrderList,
 		nextList: OrderList
