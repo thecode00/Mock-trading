@@ -5,7 +5,7 @@ const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
 class OrderItem {
     constructor(orderPrice, margin, ticker, orderType, stage, curList, nextList) {
-        this.id = new Date();
+        this.id = new Date().toString();
         this.test = (event) => {
             console.log(event);
             console.log(1, this.stage, ORDER_OPEN);
@@ -32,11 +32,12 @@ class OrderItem {
         const clone = document.importNode(orderItemTemplate.content, true);
         clone.querySelector("div").id = this.id;
         const templatePrice = clone.getElementById("t-order-price");
-        templatePrice.innerText = this.orderPrice;
+        templatePrice.innerText = this.orderPrice.toString();
         const templateAmount = clone.getElementById("t-order-amount");
-        templateAmount.innerText = this.margin;
+        templateAmount.innerText = this.margin.toString();
         // TODO: 주문의 현재 상태별로 버튼 달라지게 하기
         const templateButton = clone.getElementById("t-order-button");
+        // button의 visibility 속성을 설정하는 경우 타입 단언 또는 any 타입 사용
         templateButton.visibility = "none";
         templateButton.addEventListener("click", this.test);
         parent.append(clone);

@@ -10,7 +10,8 @@ const socket = new BinanceSocket_js_1.BinanceSocket("btc");
 const changeTickerButton = document.getElementById("change-ticker-button");
 const orderForm = document.getElementById("order-form");
 const changeTickerHandler = () => {
-    const ticker = document.getElementById("change-ticker-input").value;
+    const tickerElement = document.getElementById("change-ticker-input");
+    const ticker = tickerElement.value;
     if (ticker.trim().length === 0) {
         return;
     }
@@ -21,8 +22,10 @@ const openOrderList = new OrderList_js_1.OrderList("order");
 const openPositionList = new OrderList_js_1.OrderList("position");
 orderForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    const targetPrice = orderForm.querySelector("#price-input").value;
-    const margin = orderForm.querySelector("#margin-input").value;
+    const targetPriceElement = orderForm.querySelector("#price-input");
+    const targetPrice = parseFloat(targetPriceElement.value);
+    const marginElement = orderForm.querySelector("#margin-input");
+    const margin = parseFloat(marginElement.value);
     console.log(targetPrice, margin);
     // 주문 상황별로 바꾸기
     openOrderList.lists.push(new OrderItem_js_1.OrderItem(targetPrice, margin, "BtC", 1, ORDER_OPEN, openOrderList, openPositionList));

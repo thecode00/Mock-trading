@@ -7,12 +7,17 @@ const ORDER_POSITION = "position";
 
 // TODO: app클래스로 만들기
 const socket = new BinanceSocket("btc");
-const changeTickerButton = document.getElementById("change-ticker-button");
+const changeTickerButton = document.getElementById(
+	"change-ticker-button"
+) as HTMLButtonElement;
 
-const orderForm = document.getElementById("order-form");
+const orderForm = document.getElementById("order-form") as HTMLFormElement;
 
 const changeTickerHandler = () => {
-	const ticker = document.getElementById("change-ticker-input").value;
+	const tickerElement = document.getElementById(
+		"change-ticker-input"
+	) as HTMLInputElement;
+	const ticker = tickerElement!.value;
 	if (ticker.trim().length === 0) {
 		return;
 	}
@@ -27,8 +32,15 @@ const openPositionList = new OrderList("position");
 orderForm.addEventListener("submit", (event) => {
 	event.preventDefault();
 
-	const targetPrice = orderForm.querySelector("#price-input").value;
-	const margin = orderForm.querySelector("#margin-input").value;
+	const targetPriceElement = orderForm.querySelector(
+		"#price-input"
+	) as HTMLInputElement;
+	const targetPrice = parseFloat(targetPriceElement.value);
+
+	const marginElement = orderForm.querySelector(
+		"#margin-input"
+	) as HTMLInputElement;
+	const margin = parseFloat(marginElement.value);
 	console.log(targetPrice, margin);
 	// 주문 상황별로 바꾸기
 	openOrderList.lists.push(
