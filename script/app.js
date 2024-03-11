@@ -3,7 +3,7 @@ import { OrderList } from "./OrderList.js";
 import { BinanceSocket } from "./Utils/BinanceSocket.js";
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
-// TODO: app클래스로 만들기
+// TODO: 각 부분 모듈화
 class app {
     constructor() {
         this.changeTickerButton = document.getElementById("change-ticker-button");
