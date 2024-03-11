@@ -6,25 +6,35 @@ const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
 
 // TODO: app클래스로 만들기
-const socket = new BinanceSocket("btc");
-const changeTickerButton = document.getElementById(
-	"change-ticker-button"
-) as HTMLButtonElement;
-
-const orderForm = document.getElementById("order-form") as HTMLFormElement;
-
-const changeTickerHandler = () => {
-	const tickerElement = document.getElementById(
-		"change-ticker-input"
-	) as HTMLInputElement;
-	const ticker = tickerElement!.value;
-	if (ticker.trim().length === 0) {
-		return;
+class app {
+	socket: BinanceSocket;
+	changeTickerButton = document.getElementById(
+		"change-ticker-button"
+	) as HTMLButtonElement;
+	p: HTMLParagraphElement;
+	constructor() {
+		this.socket = new BinanceSocket();
+		this.changeTickerButton.addEventListener(
+			"click",
+			this.changeTickerHandler
+		);
+		this.p = document.getElementById("ticker-h1") as HTMLParagraphElement;
 	}
 
-	socket.changeTicker(ticker.toLocaleLowerCase());
-};
-changeTickerButton.addEventListener("click", changeTickerHandler);
+	changeTickerHandler = () => {
+		const tickerElement = document.getElementById(
+			"change-ticker-input"
+		) as HTMLInputElement;
+		const ticker = tickerElement!.value;
+		if (ticker.trim().length === 0) {
+			return;
+		}
+		this.socket.changeOrderTicker(ticker);
+		this.p.textContent = ticker.toUpperCase();
+	};
+}
+
+const orderForm = document.getElementById("order-form") as HTMLFormElement;
 
 const openOrderList = new OrderList("order");
 const openPositionList = new OrderList("position");
@@ -55,3 +65,5 @@ orderForm.addEventListener("submit", (event) => {
 		)
 	);
 });
+
+new app();
