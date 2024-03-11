@@ -7,6 +7,9 @@ const ORDER_POSITION = "position";
 class app {
     constructor() {
         this.changeTickerButton = document.getElementById("change-ticker-button");
+        this.orderForm = document.getElementById("order-form");
+        this.openOrderList = new OrderList("order");
+        this.openPositionList = new OrderList("position");
         this.changeTickerHandler = () => {
             const tickerElement = document.getElementById("change-ticker-input");
             const ticker = tickerElement.value;
@@ -19,19 +22,16 @@ class app {
         this.socket = new BinanceSocket();
         this.changeTickerButton.addEventListener("click", this.changeTickerHandler);
         this.p = document.getElementById("ticker-h1");
+        this.orderForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const targetPriceElement = this.orderForm.querySelector("#price-input");
+            const targetPrice = parseFloat(targetPriceElement.value);
+            const marginElement = this.orderForm.querySelector("#margin-input");
+            const margin = parseFloat(marginElement.value);
+            console.log(targetPrice, margin);
+            // 주문 상황별로 바꾸기
+            this.openOrderList.lists.push(new OrderItem(targetPrice, margin, "BtC", 1, ORDER_OPEN, this.openOrderList, this.openPositionList));
+        });
     }
 }
-const orderForm = document.getElementById("order-form");
-const openOrderList = new OrderList("order");
-const openPositionList = new OrderList("position");
-orderForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const targetPriceElement = orderForm.querySelector("#price-input");
-    const targetPrice = parseFloat(targetPriceElement.value);
-    const marginElement = orderForm.querySelector("#margin-input");
-    const margin = parseFloat(marginElement.value);
-    console.log(targetPrice, margin);
-    // 주문 상황별로 바꾸기
-    openOrderList.lists.push(new OrderItem(targetPrice, margin, "BtC", 1, ORDER_OPEN, openOrderList, openPositionList));
-});
 new app();
