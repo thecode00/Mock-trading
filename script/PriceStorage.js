@@ -1,7 +1,7 @@
 // TODO: Add object type
 export class PriceStorage {
     constructor() {
-        this.observers = [];
+        this.observers = {};
         this.tickerPrices = {};
     }
     setPrice(ticker, price) {
@@ -10,9 +10,16 @@ export class PriceStorage {
     getPrice(ticker) {
         return this.tickerPrices[ticker];
     }
-    notify() {
+    notify(ticker) {
         this.observers.map((item) => {
             item.curPrice = this.tickerPrices[item.ticker];
         });
+    }
+    subscribe(ticker, item) {
+        if (!(ticker in this.observers)) {
+            this.observers[ticker] = [];
+        }
+        this.observers[ticker].push(item);
+        console.log(this.observers);
     }
 }

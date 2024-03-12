@@ -35,7 +35,7 @@ class app {
 		const tickerElement = document.getElementById(
 			"change-ticker-input"
 		) as HTMLInputElement;
-		this.showTicker = tickerElement!.value;
+		this.showTicker = tickerElement!.value.toLowerCase();
 		if (this.showTicker.trim().length === 0) {
 			return;
 		}
@@ -55,19 +55,19 @@ class app {
 			"#margin-input"
 		) as HTMLInputElement;
 		const margin = parseFloat(marginElement.value);
-		// 주문 상황별로 바꾸기
-		this.openOrderList.lists.push(
-			new OrderItem(
-				targetPrice,
-				margin,
-				this.showTicker,
-				1,
-				ORDER_OPEN,
-				this.openOrderList,
-				this.openPositionList,
-				this.priceStorage.getPrice(this.showTicker)
-			)
+		// TODO: 주문 상황별로 바꾸기
+		const orderItem = new OrderItem(
+			targetPrice,
+			margin,
+			this.showTicker,
+			1,
+			ORDER_OPEN,
+			this.openOrderList,
+			this.openPositionList,
+			this.priceStorage.getPrice(this.showTicker)
 		);
+		this.openOrderList.lists.push(orderItem);
+		this.priceStorage.subscribe(this.showTicker, orderItem);
 	}
 }
 
