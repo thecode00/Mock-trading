@@ -1,3 +1,4 @@
+// TODO: Add object type
 export class PriceStorage {
     constructor() {
         this.observers = [];

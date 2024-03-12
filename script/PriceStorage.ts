@@ -1,5 +1,6 @@
 import { OrderItem } from "./OrderItem";
 
+// TODO: Add object type
 export class PriceStorage {
 	observers: OrderItem[] = [];
 	tickerPrices = {};
