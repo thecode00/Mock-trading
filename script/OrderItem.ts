@@ -12,6 +12,7 @@ export class OrderItem {
 	stage: string;
 	curList: OrderList;
 	nextList: OrderList;
+	curPrice: number;
 	constructor(
 		orderPrice: number,
 		margin: number,
@@ -19,7 +20,8 @@ export class OrderItem {
 		orderType: 0 | 1,
 		stage: string,
 		curList: OrderList,
-		nextList: OrderList
+		nextList: OrderList,
+		curPrice: number
 	) {
 		this.orderPrice = orderPrice;
 		this.margin = margin;
@@ -30,6 +32,7 @@ export class OrderItem {
 		this.curList = curList;
 		console.log(stage);
 		this.nextList = nextList;
+		this.curPrice = curPrice;
 		this.render(document.body);
 	}
 
@@ -47,6 +50,7 @@ export class OrderItem {
 	};
 
 	render(parent: HTMLElement) {
+		console.log(1234);
 		const orderItemTemplate: HTMLTemplateElement = document.getElementById(
 			"order-item-template"
 		) as HTMLTemplateElement;

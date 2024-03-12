@@ -1,8 +1,9 @@
 export class BinanceSocket {
-    constructor() {
+    constructor(storage) {
         this.ws = new WebSocket(`wss://stream.binance.com:9443/ws`);
         this.ticker = "btc";
         this.p = document.getElementById("ticker-price");
+        this.storage = storage;
         this.init();
     }
     init() {
@@ -17,6 +18,8 @@ export class BinanceSocket {
             if (json.s === `${this.ticker}usdt`.toUpperCase()) {
                 this.p.innerText = json.p;
             }
+            this.storage.setPrice(json.s.slice(0, 3), json.p);
+            console.log(this.storage.tickerPrices);
         };
     }
     addTickerStream(ticker) {

@@ -1,11 +1,15 @@
+import { PriceStorage } from "../PriceStorage";
+
 export class BinanceSocket {
 	ws: WebSocket = new WebSocket(`wss://stream.binance.com:9443/ws`);
 	p: HTMLParagraphElement;
 	ticker = "btc";
-	constructor() {
+	storage: PriceStorage;
+	constructor(storage: PriceStorage) {
 		this.p = document.getElementById(
 			"ticker-price"
 		) as HTMLParagraphElement;
+		this.storage = storage;
 		this.init();
 	}
 
@@ -21,6 +25,8 @@ export class BinanceSocket {
 			if (json.s === `${this.ticker}usdt`.toUpperCase()) {
 				this.p!.innerText = json.p;
 			}
+			this.storage.setPrice(json.s.slice(0, 3), json.p);
+			console.log(this.storage.tickerPrices);
 		};
 	}
 

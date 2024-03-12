@@ -1,5 +1,6 @@
 import { OrderItem } from "./OrderItem.js";
 import { OrderList } from "./OrderList.js";
+import { PriceStorage } from "./PriceStorage.js";
 import { BinanceSocket } from "./Utils/BinanceSocket.js";
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
@@ -10,28 +11,30 @@ class app {
         this.orderForm = document.getElementById("order-form");
         this.openOrderList = new OrderList("order");
         this.openPositionList = new OrderList("position");
+        this.showTicker = "btc"; // 현재 보여지는 코인의 티커, 티커는 항상 소문자로 취급
+        this.priceStorage = new PriceStorage(); // 코인들의 가격들을 저장하는 중앙 저장소
         this.changeTickerHandler = () => {
             const tickerElement = document.getElementById("change-ticker-input");
-            const ticker = tickerElement.value;
-            if (ticker.trim().length === 0) {
+            this.showTicker = tickerElement.value;
+            if (this.showTicker.trim().length === 0) {
                 return;
             }
-            this.socket.changeOrderTicker(ticker);
-            this.p.textContent = ticker.toUpperCase();
+            this.socket.changeOrderTicker(this.showTicker);
+            this.p.textContent = this.showTicker.toUpperCase();
         };
-        this.socket = new BinanceSocket();
+        this.socket = new BinanceSocket(this.priceStorage);
         this.changeTickerButton.addEventListener("click", this.changeTickerHandler);
         this.p = document.getElementById("ticker-h1");
-        this.orderForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const targetPriceElement = this.orderForm.querySelector("#price-input");
-            const targetPrice = parseFloat(targetPriceElement.value);
-            const marginElement = this.orderForm.querySelector("#margin-input");
-            const margin = parseFloat(marginElement.value);
-            console.log(targetPrice, margin);
-            // 주문 상황별로 바꾸기
-            this.openOrderList.lists.push(new OrderItem(targetPrice, margin, "BtC", 1, ORDER_OPEN, this.openOrderList, this.openPositionList));
-        });
+        this.orderForm.addEventListener("submit", this.addOrder.bind(this));
+    }
+    addOrder(event) {
+        event.preventDefault();
+        const targetPriceElement = this.orderForm.querySelector("#price-input");
+        const targetPrice = parseFloat(targetPriceElement.value);
+        const marginElement = this.orderForm.querySelector("#margin-input");
+        const margin = parseFloat(marginElement.value);
+        // 주문 상황별로 바꾸기
+        this.openOrderList.lists.push(new OrderItem(targetPrice, margin, this.showTicker, 1, ORDER_OPEN, this.openOrderList, this.openPositionList, this.priceStorage.getPrice(this.showTicker)));
     }
 }
 new app();

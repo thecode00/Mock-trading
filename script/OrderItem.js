@@ -1,7 +1,7 @@
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
 export class OrderItem {
-    constructor(orderPrice, margin, ticker, orderType, stage, curList, nextList) {
+    constructor(orderPrice, margin, ticker, orderType, stage, curList, nextList, curPrice) {
         this.id = new Date().toString();
         this.test = (event) => {
             console.log(event);
@@ -20,11 +20,13 @@ export class OrderItem {
         this.curList = curList;
         console.log(stage);
         this.nextList = nextList;
+        this.curPrice = curPrice;
         this.render(document.body);
     }
     sell() { }
     cancel() { }
     render(parent) {
+        console.log(1234);
         const orderItemTemplate = document.getElementById("order-item-template");
         const clone = document.importNode(orderItemTemplate.content, true);
         clone.querySelector("div").id = this.id;
