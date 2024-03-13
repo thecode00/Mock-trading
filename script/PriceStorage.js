@@ -6,12 +6,13 @@ export class PriceStorage {
     }
     setPrice(ticker, price) {
         this.tickerPrices[ticker] = price;
+        this.notify(ticker);
     }
     getPrice(ticker) {
         return this.tickerPrices[ticker];
     }
     notify(ticker) {
-        this.observers.map((item) => {
+        this.observers[ticker].map((item) => {
             item.curPrice = this.tickerPrices[item.ticker];
         });
     }

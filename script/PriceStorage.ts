@@ -1,12 +1,21 @@
 import { OrderItem } from "./OrderItem";
 
+interface observerInterface {
+	[key: string]: OrderItem[];
+}
+
+interface tickerPricesInterface {
+	[key: string]: number;
+}
+
 // TODO: Add object type
 export class PriceStorage {
-	observers = {};
-	tickerPrices = {};
+	observers: observerInterface = {};
+	tickerPrices: tickerPricesInterface = {};
 
 	setPrice(ticker: string, price: number) {
 		this.tickerPrices[ticker] = price;
+		this.notify(ticker);
 	}
 
 	getPrice(ticker: string) {
@@ -14,7 +23,7 @@ export class PriceStorage {
 	}
 
 	notify(ticker: string) {
-		this.observers.map((item) => {
+		this.observers[ticker].map((item) => {
 			item.curPrice = this.tickerPrices[item.ticker];
 		});
 	}
