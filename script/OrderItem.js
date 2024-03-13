@@ -1,5 +1,6 @@
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
+// TODO: 클래스 컴포넌트로 만들기
 export class OrderItem {
     constructor(orderPrice, margin, ticker, orderType, stage, curPrice) {
         this.id = new Date().toString();
