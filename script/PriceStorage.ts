@@ -23,8 +23,12 @@ export class PriceStorage {
 	}
 
 	notify(ticker: string) {
+		if (!(ticker in this.observers)) {
+			this.observers[ticker] = [];
+		}
 		this.observers[ticker].map((item) => {
 			item.curPrice = this.tickerPrices[item.ticker];
+			item.render(document.body);
 		});
 	}
 

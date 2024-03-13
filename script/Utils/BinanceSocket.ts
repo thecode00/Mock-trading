@@ -21,12 +21,10 @@ export class BinanceSocket {
 		};
 		this.ws.onmessage = (msg) => {
 			const json = JSON.parse(msg.data);
-			console.log(json);
 			if (json.s === `${this.ticker}usdt`.toUpperCase()) {
 				this.p!.innerText = json.p;
 			}
-			this.storage.setPrice(json.s.slice(0, 3), json.p);
-			console.log(this.storage.tickerPrices);
+			this.storage.setPrice(json.s.slice(0, 3).toLowerCase(), json.p);
 		};
 	}
 
