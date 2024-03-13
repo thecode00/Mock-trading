@@ -10,6 +10,7 @@ export class OrderItem {
         this.orderType = orderType; // 0 = Long, 1 = Short
         this.stage = stage; // 주문의 현재 상태
         this.curPrice = curPrice;
+        this.container = this.createContainer();
         console.log(this);
         this.render(document.body);
     }
@@ -26,10 +27,22 @@ export class OrderItem {
         // TODO: 주문의 현재 상태별로 버튼 달라지게 하기
         const templateButton = clone.getElementById("t-order-button");
     }
+    createContainer() {
+        const container = document.createElement("div");
+        const currentPriceParagraph = document.createElement("p");
+        currentPriceParagraph.textContent = this.curPrice.toString();
+        const orderPriceParagraph = document.createElement("p");
+        orderPriceParagraph.textContent = this.orderPrice.toString();
+        const orderAmountParagraph = document.createElement("p");
+        orderAmountParagraph.textContent = this.margin.toString();
+        container.append(currentPriceParagraph, orderPriceParagraph, orderAmountParagraph);
+        return container;
+    }
     sell() { }
     cancel() { }
     render(parent) {
-        console.log("OrderItem render");
-        parent.append();
+        console.log("OrderItem rendered");
+        console.log(this.curPrice);
+        parent.append(this.container);
     }
 }
