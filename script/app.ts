@@ -62,8 +62,6 @@ class app {
 			this.showTicker,
 			1,
 			ORDER_OPEN,
-			this.openOrderList,
-			this.openPositionList,
 			this.priceStorage.getPrice(this.showTicker)
 		);
 		this.openOrderList.lists.push(orderItem);

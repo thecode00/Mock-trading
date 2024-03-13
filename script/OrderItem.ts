@@ -3,6 +3,8 @@ import { OrderList } from "./OrderList";
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
 
+// TODO: 클래스 컴포넌트로 만들기
+
 export class OrderItem {
 	id = new Date().toString();
 	orderPrice: number;
@@ -10,8 +12,6 @@ export class OrderItem {
 	ticker: string;
 	orderType: number;
 	stage: string;
-	curList: OrderList;
-	nextList: OrderList;
 	curPrice: number;
 	constructor(
 		orderPrice: number,
@@ -19,8 +19,6 @@ export class OrderItem {
 		ticker: string,
 		orderType: 0 | 1,
 		stage: string,
-		curList: OrderList,
-		nextList: OrderList,
 		curPrice: number
 	) {
 		this.orderPrice = orderPrice;
@@ -28,38 +26,27 @@ export class OrderItem {
 		this.ticker = ticker;
 		this.orderType = orderType; // 0 = Long, 1 = Short
 		this.stage = stage; // 주문의 현재 상태
-		// 테스트용
-		this.curList = curList;
-		console.log(stage);
-		this.nextList = nextList;
 		this.curPrice = curPrice;
+		console.log(this);
 		this.render(document.body);
 	}
 
-	sell() {}
-
-	cancel() {}
-
-	test = (event: MouseEvent) => {
-		console.log(event);
-		console.log(1, this.stage, ORDER_OPEN);
-		if (this.stage === ORDER_OPEN) {
-			console.log(2);
-			this.curList.moveOrderItem(this.id, this.nextList);
-		}
-	};
-
-	render(parent: HTMLElement) {
-		console.log(1234);
+	createItemFromTemplate() {
 		const orderItemTemplate: HTMLTemplateElement = document.getElementById(
 			"order-item-template"
 		) as HTMLTemplateElement;
+
 		const clone: DocumentFragment = document.importNode(
 			orderItemTemplate.content,
 			true
 		) as DocumentFragment;
 
 		(clone.querySelector("div") as HTMLDivElement).id = this.id;
+		const curPriceParagraph = clone.getElementById(
+			"cur-price"
+		) as HTMLParagraphElement;
+		curPriceParagraph.textContent = this.curPrice.toString();
+
 		const templatePrice = clone.getElementById(
 			"t-order-price"
 		) as HTMLParagraphElement;
@@ -74,10 +61,14 @@ export class OrderItem {
 		const templateButton = clone.getElementById(
 			"t-order-button"
 		) as HTMLButtonElement;
-		// button의 visibility 속성을 설정하는 경우 타입 단언 또는 any 타입 사용
-		(templateButton as any).visibility = "none";
-		templateButton.addEventListener("click", this.test);
+	}
 
-		parent.append(clone);
+	sell() {}
+
+	cancel() {}
+
+	render(parent: HTMLElement) {
+		console.log("OrderItem render");
+		parent.append();
 	}
 }

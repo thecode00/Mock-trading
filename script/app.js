@@ -34,7 +34,7 @@ class app {
         const marginElement = this.orderForm.querySelector("#margin-input");
         const margin = parseFloat(marginElement.value);
         // TODO: 주문 상황별로 바꾸기
-        const orderItem = new OrderItem(targetPrice, margin, this.showTicker, 1, ORDER_OPEN, this.openOrderList, this.openPositionList, this.priceStorage.getPrice(this.showTicker));
+        const orderItem = new OrderItem(targetPrice, margin, this.showTicker, 1, ORDER_OPEN, this.priceStorage.getPrice(this.showTicker));
         this.openOrderList.lists.push(orderItem);
         this.priceStorage.subscribe(this.showTicker, orderItem);
     }
