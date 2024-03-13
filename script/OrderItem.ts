@@ -30,6 +30,7 @@ export class OrderItem {
 		this.curPrice = curPrice;
 		this.container = this.createContainer();
 		console.log(this);
+		document.body.append(this.container);
 		this.render(document.body);
 	}
 
@@ -91,6 +92,7 @@ export class OrderItem {
 	render(parent: HTMLElement) {
 		console.log("OrderItem rendered");
 		console.log(this.curPrice);
-		parent.append(this.container);
+		this.container.querySelector("p:last-child")!.textContent =
+			this.curPrice.toString();
 	}
 }
