@@ -32,7 +32,6 @@ class app {
         const marginElement = this.orderForm.querySelector("#margin-input");
         const margin = parseFloat(marginElement.value);
         const orderItem = new OrderItem(targetPrice, margin, this.showTicker, 1, ORDER_OPEN, this.priceStorage.getPrice(this.showTicker));
-        // this.openOrderList.lists.push(orderItem);
         this.priceStorage.subscribe(this.showTicker, orderItem);
         orderItem.attach(openOrderList);
     }
