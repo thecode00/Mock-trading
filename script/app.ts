@@ -1,10 +1,11 @@
 import { OrderItem } from "./OrderItem.js";
-import { OrderList } from "./OrderList.js";
 import { PriceStorage } from "./PriceStorage.js";
 import { BinanceSocket } from "./Utils/BinanceSocket.js";
 
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
+
+const openOrderList = document.getElementById("open-order-list");
 
 // TODO: 각 부분 모듈화
 class app {
@@ -14,8 +15,6 @@ class app {
 	) as HTMLButtonElement;
 	p: HTMLParagraphElement;
 	orderForm = document.getElementById("order-form") as HTMLFormElement;
-	openOrderList = new OrderList("order");
-	openPositionList = new OrderList("position");
 
 	showTicker = "btc"; // 현재 보여지는 코인의 티커, 티커는 항상 소문자로 취급
 
@@ -55,7 +54,6 @@ class app {
 			"#margin-input"
 		) as HTMLInputElement;
 		const margin = parseFloat(marginElement.value);
-		// TODO: 주문 상황별로 바꾸기
 		const orderItem = new OrderItem(
 			targetPrice,
 			margin,
@@ -64,8 +62,8 @@ class app {
 			ORDER_OPEN,
 			this.priceStorage.getPrice(this.showTicker)
 		);
-		this.openOrderList.lists.push(orderItem);
 		this.priceStorage.subscribe(this.showTicker, orderItem);
+		orderItem.attach(openOrderList!);
 	}
 }
 
