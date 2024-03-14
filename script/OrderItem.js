@@ -1,20 +1,19 @@
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
+const openPositionList = document.getElementById("open-position-list");
 // TODO: 클래스 컴포넌트로 만들기
 export class OrderItem {
     constructor(orderPrice, margin, ticker, orderType, stage, curPrice) {
-        this.id = new Date().toString();
+        this.id = new Date().getMilliseconds().toString();
         this.orderPrice = orderPrice;
         this.margin = margin;
         this.ticker = ticker;
-        this.orderType = orderType; // 0 = Long, 1 = Short
-        this.stage = stage; // 주문의 현재 상태
+        this.orderType = orderType;
+        this.stage = stage;
         this.curPrice = curPrice;
         this.container = this.createContainer();
-        console.log(this);
-        document.body.append(this.container);
-        this.render(document.body);
     }
+    // TODO: 웹컴포넌트 변경용
     createItemFromTemplate() {
         const orderItemTemplate = document.getElementById("order-item-template");
         const clone = document.importNode(orderItemTemplate.content, true);
@@ -30,21 +29,34 @@ export class OrderItem {
     }
     createContainer() {
         const container = document.createElement("div");
-        const currentPriceParagraph = document.createElement("p");
-        currentPriceParagraph.textContent = this.curPrice.toString();
+        const tickerParagraph = document.createElement("p");
+        tickerParagraph.textContent = this.ticker;
         const orderPriceParagraph = document.createElement("p");
         orderPriceParagraph.textContent = this.orderPrice.toString();
         const orderAmountParagraph = document.createElement("p");
         orderAmountParagraph.textContent = this.margin.toString();
-        container.append(currentPriceParagraph, orderPriceParagraph, orderAmountParagraph);
+        container.append(tickerParagraph, orderPriceParagraph, orderAmountParagraph);
         return container;
+    }
+    attach(parent) {
+        parent.appendChild(this.container);
+    }
+    checkPrice() {
+        if (this.stage === ORDER_OPEN) {
+            if (this.curPrice <= this.orderPrice) {
+                this.stage = ORDER_POSITION;
+                console.log("Position open!");
+                this.attach(openPositionList);
+            }
+        }
     }
     sell() { }
     cancel() { }
-    render(parent) {
-        console.log("OrderItem rendered");
-        console.log(this.curPrice);
+    render() {
+        this.checkPrice();
         this.container.querySelector("p:last-child").textContent =
             this.curPrice.toString();
+        if (this.stage === ORDER_POSITION) {
+        }
     }
 }
