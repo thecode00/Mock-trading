@@ -24,10 +24,14 @@ export class BinanceSocket {
 			if (json.s === `${this.ticker}usdt`.toUpperCase()) {
 				this.p!.innerText = json.p;
 			}
-			this.storage.setPrice(json.s.slice(0, 3).toLowerCase(), json.p);
+			this.storage.setPrice(json.s.slice(0, -4).toLowerCase(), json.p);
 		};
 	}
 
+	/**
+	 * 웹소켓으로 가격을 받아올 코인을 추가하는 함수
+	 * @param {string} ticker	웹소켓으로 가격을 받아올 코인의 티커
+	 */
 	addTickerStream(ticker: string) {
 		const subscribeMessage = JSON.stringify({
 			method: "SUBSCRIBE",
