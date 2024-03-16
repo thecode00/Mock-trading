@@ -31,55 +31,42 @@ export class OrderItem {
 		this.container = this.createContainer();
 	}
 
-	// TODO: 웹컴포넌트 변경용
-	createItemFromTemplate() {
-		const orderItemTemplate: HTMLTemplateElement = document.getElementById(
-			"order-item-template"
-		) as HTMLTemplateElement;
+	orderItemButtonHandler = () => {
+		console.log("btn clickd");
+		if (this.stage === ORDER_POSITION) {
+		}
+		this._deleteFromDOM();
+	};
 
-		const clone: DocumentFragment = document.importNode(
-			orderItemTemplate.content,
-			true
-		) as DocumentFragment;
-
-		(clone.querySelector("div") as HTMLDivElement).id = this.id;
-		const curPriceParagraph = clone.getElementById(
-			"cur-price"
-		) as HTMLParagraphElement;
-		curPriceParagraph.textContent = this.curPrice.toString();
-
-		const templatePrice = clone.getElementById(
-			"t-order-price"
-		) as HTMLParagraphElement;
-		templatePrice.innerText = this.orderPrice.toString();
-
-		const templateAmount = clone.getElementById(
-			"t-order-amount"
-		) as HTMLParagraphElement;
-		templateAmount.innerText = this.margin.toString();
-
-		// TODO: 주문의 현재 상태별로 버튼 달라지게 하기
-		const templateButton = clone.getElementById(
-			"t-order-button"
-		) as HTMLButtonElement;
+	_deleteFromDOM() {
+		this.container.parentElement?.removeChild(this.container);
 	}
 
 	createContainer() {
 		const container = document.createElement("div");
+
+		const orderStageParagraph = document.createElement("p");
+		orderStageParagraph.textContent = this.stage;
 
 		const tickerParagraph = document.createElement("p");
 		tickerParagraph.textContent = this.ticker;
 
 		const orderPriceParagraph = document.createElement("p");
 		orderPriceParagraph.textContent = this.orderPrice.toString();
+		orderPriceParagraph.id = "order-price";
 
 		const orderAmountParagraph = document.createElement("p");
 		orderAmountParagraph.textContent = this.margin.toString();
 
+		const btn = document.createElement("button");
+		btn.addEventListener("click", this.orderItemButtonHandler);
+		btn.textContent = "124";
+
 		container.append(
 			tickerParagraph,
 			orderPriceParagraph,
-			orderAmountParagraph
+			orderAmountParagraph,
+			btn
 		);
 		return container;
 	}
@@ -87,25 +74,33 @@ export class OrderItem {
 	attach(parent: HTMLElement) {
 		parent.appendChild(this.container);
 	}
+
 	checkPrice() {
 		if (this.stage === ORDER_OPEN) {
+			// 주문이 체결된 경우
 			if (this.curPrice <= this.orderPrice) {
 				this.stage = ORDER_POSITION;
 				console.log("Position open!");
+				this.orderPrice = this.curPrice;
+				this.container.querySelector("#order-price")!.textContent =
+					this.orderPrice.toString();
 				this.attach(openPositionList!);
 			}
 		}
 	}
 
-	sell() {}
-
-	cancel() {}
+	static calcProfitRate(curPrice: number, orderPrice: number) {
+		return (((curPrice - orderPrice) / orderPrice) * 100).toFixed(2);
+	}
 
 	render() {
 		this.checkPrice();
-		this.container.querySelector("p:last-child")!.textContent =
-			this.curPrice.toString();
 		if (this.stage === ORDER_POSITION) {
+			this.container.querySelector("p:last-child")!.textContent =
+				OrderItem.calcProfitRate(
+					this.curPrice,
+					this.orderPrice
+				).toString();
 		}
 	}
 }
