@@ -5,6 +5,7 @@ export class BinanceSocket {
 	p: HTMLParagraphElement;
 	ticker = "btc";
 	storage: PriceStorage;
+
 	constructor(storage: PriceStorage) {
 		this.p = document.getElementById(
 			"ticker-price"
@@ -24,6 +25,7 @@ export class BinanceSocket {
 			if (json.s === `${this.ticker}usdt`.toUpperCase()) {
 				this.p!.innerText = json.p;
 			}
+			// 티커의 마지막에 붙어있는 usdt제거
 			this.storage.setPrice(json.s.slice(0, -4).toLowerCase(), json.p);
 		};
 	}
@@ -46,6 +48,10 @@ export class BinanceSocket {
 		this.ws.send(Message);
 	}
 
+	/**
+	 * 쓰이지않는 티커의 웹소켓 구독을 취소하는 함수
+	 * @param ticker 웹소켓 구독을 제거할 티커
+	 */
 	deleteTickerStream(ticker: string) {
 		const unsubscribeMessage = JSON.stringify({
 			method: "UNSUBSCRIBE",
