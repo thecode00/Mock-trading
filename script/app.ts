@@ -34,10 +34,10 @@ class app {
 		const tickerElement = document.getElementById(
 			"change-ticker-input"
 		) as HTMLInputElement;
-		this.showTicker = tickerElement!.value.toLowerCase();
-		if (this.showTicker.trim().length === 0) {
+		if (tickerElement!.value.toLowerCase().trim().length === 0) {
 			return;
 		}
+		this.showTicker = tickerElement!.value.toLowerCase();
 		this.socket.changeOrderTicker(this.showTicker);
 		this.p.textContent = this.showTicker.toUpperCase();
 	};
