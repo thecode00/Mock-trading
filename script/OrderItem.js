@@ -3,11 +3,15 @@ const ORDER_POSITION = "position";
 const orderPositionList = document.getElementById("open-position-list");
 // TODO: 클래스 컴포넌트로 만들기
 export class OrderItem {
-    constructor(parent, orderPrice, margin, ticker, orderType, stage, curPrice) {
+    constructor(parent, orderPrice, margin, ticker, orderType, stage, curPrice, profitStorage) {
+        this.profitStorage = profitStorage;
         this.id = new Date().getMilliseconds().toString();
         this.orderItemButtonHandler = () => {
-            console.log("btn clickd");
+            console.log("btn clickd", this.stage);
             if (this.stage === ORDER_POSITION) {
+                this.profitStorage.recordProfit(this.margin *
+                    (1 +
+                        parseFloat(OrderItem.calcProfitRate(this.curPrice, this.orderPrice))));
             }
             this._deleteFromDOM();
         };

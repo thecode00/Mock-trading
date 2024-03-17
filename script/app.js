@@ -1,5 +1,6 @@
 import { OrderItem } from "./OrderItem.js";
 import { PriceStorage } from "./Storage/PriceStorage.js";
+import { ProfitStorage } from "./Storage/ProfitStorage.js";
 import { BinanceSocket } from "./Utils/BinanceSocket.js";
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
@@ -11,6 +12,7 @@ class app {
         this.orderForm = document.getElementById("order-form");
         this.showTicker = "btc"; // 현재 보여지는 코인의 티커, 티커는 항상 소문자로 취급
         this.priceStorage = new PriceStorage(); // 코인들의 가격들을 저장하는 중앙 저장소
+        this.profitStorage = new ProfitStorage();
         this.changeTickerHandler = () => {
             const tickerElement = document.getElementById("change-ticker-input");
             if (tickerElement.value.toLowerCase().trim().length === 0) {
@@ -31,7 +33,7 @@ class app {
         const targetPrice = parseFloat(targetPriceElement.value);
         const marginElement = this.orderForm.querySelector("#margin-input");
         const margin = parseFloat(marginElement.value);
-        const orderItem = new OrderItem(openOrderList, targetPrice, margin, this.showTicker, 1, ORDER_OPEN, this.priceStorage.getPrice(this.showTicker));
+        const orderItem = new OrderItem(openOrderList, targetPrice, margin, this.showTicker, 1, ORDER_OPEN, this.priceStorage.getPrice(this.showTicker), this.profitStorage);
         this.priceStorage.subscribe(this.showTicker, orderItem);
         orderItem.attach();
     }
