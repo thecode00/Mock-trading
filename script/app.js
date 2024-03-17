@@ -1,5 +1,5 @@
 import { OrderItem } from "./OrderItem.js";
-import { PriceStorage } from "./PriceStorage.js";
+import { PriceStorage } from "./Storage/PriceStorage.js";
 import { BinanceSocket } from "./Utils/BinanceSocket.js";
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
@@ -31,9 +31,9 @@ class app {
         const targetPrice = parseFloat(targetPriceElement.value);
         const marginElement = this.orderForm.querySelector("#margin-input");
         const margin = parseFloat(marginElement.value);
-        const orderItem = new OrderItem(targetPrice, margin, this.showTicker, 1, ORDER_OPEN, this.priceStorage.getPrice(this.showTicker));
+        const orderItem = new OrderItem(openOrderList, targetPrice, margin, this.showTicker, 1, ORDER_OPEN, this.priceStorage.getPrice(this.showTicker));
         this.priceStorage.subscribe(this.showTicker, orderItem);
-        orderItem.attach(openOrderList);
+        orderItem.attach();
     }
 }
 new app();
