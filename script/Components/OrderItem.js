@@ -1,11 +1,10 @@
-import Component from "./Component";
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
 const orderPositionList = document.getElementById("open-position-list");
 // TODO: 클래스 컴포넌트로 만들기
-export class OrderItem extends Component {
+export class OrderItem extends HTMLElement {
     constructor(parent, orderPrice, margin, ticker, orderType, stage, curPrice, profitStorage) {
-        super(parent);
+        super();
         this.profitStorage = profitStorage;
         this.id = new Date().getMilliseconds().toString();
         this.orderItemButtonHandler = () => {
@@ -25,6 +24,9 @@ export class OrderItem extends Component {
         this.stage = stage;
         this.curPrice = curPrice;
         this.container = this.createContainer();
+        //
+        this.attachShadow({ mode: "open" });
+        this.render();
     }
     _deleteFromDOM() {
         this.parent.removeChild(this.container);
@@ -78,3 +80,4 @@ export class OrderItem extends Component {
         }
     }
 }
+customElements.define("order-item", OrderItem);
