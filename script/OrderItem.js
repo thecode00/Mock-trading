@@ -1,9 +1,9 @@
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
-const openPositionList = document.getElementById("open-position-list");
+const orderPositionList = document.getElementById("open-position-list");
 // TODO: 클래스 컴포넌트로 만들기
 export class OrderItem {
-    constructor(orderPrice, margin, ticker, orderType, stage, curPrice) {
+    constructor(parent, orderPrice, margin, ticker, orderType, stage, curPrice) {
         this.id = new Date().getMilliseconds().toString();
         this.orderItemButtonHandler = () => {
             console.log("btn clickd");
@@ -11,6 +11,7 @@ export class OrderItem {
             }
             this._deleteFromDOM();
         };
+        this.parent = parent;
         this.orderPrice = orderPrice;
         this.margin = margin;
         this.ticker = ticker;
@@ -20,8 +21,7 @@ export class OrderItem {
         this.container = this.createContainer();
     }
     _deleteFromDOM() {
-        var _a;
-        (_a = this.container.parentElement) === null || _a === void 0 ? void 0 : _a.removeChild(this.container);
+        this.parent.removeChild(this.container);
     }
     createContainer() {
         const container = document.createElement("div");
@@ -34,14 +34,15 @@ export class OrderItem {
         orderPriceParagraph.id = "order-price";
         const orderAmountParagraph = document.createElement("p");
         orderAmountParagraph.textContent = this.margin.toString();
+        orderAmountParagraph.id = "order-amount";
         const btn = document.createElement("button");
         btn.addEventListener("click", this.orderItemButtonHandler);
-        btn.textContent = "124";
+        btn.textContent = "Cancel";
         container.append(tickerParagraph, orderPriceParagraph, orderAmountParagraph, btn);
         return container;
     }
-    attach(parent) {
-        parent.appendChild(this.container);
+    attach() {
+        this.parent.appendChild(this.container);
     }
     checkPrice() {
         if (this.stage === ORDER_OPEN) {
@@ -49,10 +50,14 @@ export class OrderItem {
             if (this.curPrice <= this.orderPrice) {
                 this.stage = ORDER_POSITION;
                 console.log("Position open!");
+                // 주문이 체결된후 ui변경
                 this.orderPrice = this.curPrice;
                 this.container.querySelector("#order-price").textContent =
                     this.orderPrice.toString();
-                this.attach(openPositionList);
+                this.container.querySelector("button").textContent = "Sell";
+                // 요소 위치 변경
+                this.parent = orderPositionList;
+                this.attach();
             }
         }
     }
@@ -62,7 +67,7 @@ export class OrderItem {
     render() {
         this.checkPrice();
         if (this.stage === ORDER_POSITION) {
-            this.container.querySelector("p:last-child").textContent =
+            this.container.querySelector("#order-amount").textContent =
                 OrderItem.calcProfitRate(this.curPrice, this.orderPrice).toString();
         }
     }

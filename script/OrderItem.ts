@@ -1,11 +1,12 @@
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
-const openPositionList = document.getElementById("open-position-list");
+const orderPositionList = document.getElementById("open-position-list");
 
 // TODO: 클래스 컴포넌트로 만들기
 
 export class OrderItem {
 	id = new Date().getMilliseconds().toString();
+	parent: HTMLElement; // container를 넣을 부모 요소
 	orderPrice: number;
 	margin: number;
 	ticker: string;
@@ -15,6 +16,7 @@ export class OrderItem {
 	container: HTMLDivElement;
 
 	constructor(
+		parent: HTMLElement,
 		orderPrice: number,
 		margin: number,
 		ticker: string,
@@ -22,6 +24,7 @@ export class OrderItem {
 		stage: string,
 		curPrice: number
 	) {
+		this.parent = parent;
 		this.orderPrice = orderPrice;
 		this.margin = margin;
 		this.ticker = ticker;
@@ -39,7 +42,7 @@ export class OrderItem {
 	};
 
 	_deleteFromDOM() {
-		this.container.parentElement?.removeChild(this.container);
+		this.parent.removeChild(this.container);
 	}
 
 	createContainer() {
@@ -57,10 +60,11 @@ export class OrderItem {
 
 		const orderAmountParagraph = document.createElement("p");
 		orderAmountParagraph.textContent = this.margin.toString();
+		orderAmountParagraph.id = "order-amount";
 
 		const btn = document.createElement("button");
 		btn.addEventListener("click", this.orderItemButtonHandler);
-		btn.textContent = "124";
+		btn.textContent = "Cancel";
 
 		container.append(
 			tickerParagraph,
@@ -71,8 +75,8 @@ export class OrderItem {
 		return container;
 	}
 
-	attach(parent: HTMLElement) {
-		parent.appendChild(this.container);
+	attach() {
+		this.parent.appendChild(this.container);
 	}
 
 	checkPrice() {
@@ -81,10 +85,14 @@ export class OrderItem {
 			if (this.curPrice <= this.orderPrice) {
 				this.stage = ORDER_POSITION;
 				console.log("Position open!");
+				// 주문이 체결된후 ui변경
 				this.orderPrice = this.curPrice;
 				this.container.querySelector("#order-price")!.textContent =
 					this.orderPrice.toString();
-				this.attach(openPositionList!);
+				this.container.querySelector("button")!.textContent = "Sell";
+				// 요소 위치 변경
+				this.parent = orderPositionList!;
+				this.attach();
 			}
 		}
 	}
@@ -96,7 +104,7 @@ export class OrderItem {
 	render() {
 		this.checkPrice();
 		if (this.stage === ORDER_POSITION) {
-			this.container.querySelector("p:last-child")!.textContent =
+			this.container.querySelector("#order-amount")!.textContent =
 				OrderItem.calcProfitRate(
 					this.curPrice,
 					this.orderPrice
