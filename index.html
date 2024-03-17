@@ -1,83 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link
-			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
-			rel="stylesheet"
-			integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
-			crossorigin="anonymous"
-		/>
-		<link rel="stylesheet" href="assets/styles/index.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="assets/styles/index.css" />
 
-		<title>Mock crypto trading</title>
-		<script defer src="script/app.js" type="module"></script>
-	</head>
-	<body>
-		<template id="order-item-template">
-			<div>
-				<p id="cur-price"></p>
-				<div>
-					<p>Price</p>
-					<p id="t-order-price"></p>
-				</div>
-				<div>
-					<p>Amount</p>
-					<p id="t-order-amount"></p>
-				</div>
+    <title>Mock crypto trading</title>
+    <script defer src="script/app.js" type="module"></script>
+  </head>
+  <body>
+    <section class="container">
+      <div>
+        <h1 id="ticker-h1">BTC</h1>
+        <h1 id="ticker-price"></h1>
+        <input
+          type="text"
+          placeholder="Enter ticker..."
+          id="change-ticker-input"
+        />
+        <button id="change-ticker-button" class="btn-primary">
+          Change Ticker
+        </button>
+      </div>
+      <div>
+        <p>$0</p>
+      </div>
+    </section>
 
-				<button id="t-order-button">Cancel</button>
-			</div>
-			<p id="profit">0</p>
-		</template>
-		<section class="container">
-			<h1 id="ticker-h1">BTC</h1>
-			<h1 id="ticker-price"></h1>
-			<input
-				type="text"
-				placeholder="Enter ticker..."
-				id="change-ticker-input"
-			/>
-			<button id="change-ticker-button" class="btn-primary">
-				Change Ticker
-			</button>
-		</section>
-
-		<section class="container">
-			<!-- 반응형 검색 넣기 -->
-			<!-- Css 트위터 그 컴포넌트 라이브러리 쓰기 -->
-			<form id="order-form">
-				<label for="price-input">Price</label>
-				<div class="input-group mb-3">
-					<span class="input-group-text">$</span>
-					<input
-						type="text"
-						class="form-control"
-						id="price-input"
-						aria-label="Amount (to the nearest dollar)"
-					/>
-				</div>
-				<label for="margin-input">Margin</label>
-				<div class="input-group mb-3">
-					<span class="input-group-text">$</span>
-					<input
-						type="text"
-						class="form-control"
-						id="margin-input"
-						aria-label="Amount (to the nearest dollar)"
-					/>
-				</div>
-				<button type="submit" id="trade-button" class="btn btn-primary">
-					Order!!
-				</button>
-			</form>
-		</section>
-		<section class="container" id="open-order-list">
-			<p>Open order</p>
-		</section>
-		<section class="container" id="open-position-list">
-			<p>Open position</p>
-		</section>
-	</body>
+    <section class="container">
+      <!-- 반응형 검색 넣기 -->
+      <!-- Css 트위터 그 컴포넌트 라이브러리 쓰기 -->
+      <form id="order-form">
+        <label for="price-input">Price</label>
+        <div class="input-group mb-3">
+          <span class="input-group-text">$</span>
+          <input
+            type="text"
+            class="form-control"
+            id="price-input"
+            aria-label="Amount (to the nearest dollar)"
+          />
+        </div>
+        <label for="margin-input">Margin</label>
+        <div class="input-group mb-3">
+          <span class="input-group-text">$</span>
+          <input
+            type="text"
+            class="form-control"
+            id="margin-input"
+            aria-label="Amount (to the nearest dollar)"
+          />
+        </div>
+        <button type="submit" id="trade-button" class="btn btn-primary">
+          Order!!
+        </button>
+      </form>
+    </section>
+    <section class="container" id="open-order-list">
+      <p>Open order</p>
+    </section>
+    <section class="container" id="open-position-list">
+      <p>Open position</p>
+    </section>
+  </body>
 </html>
