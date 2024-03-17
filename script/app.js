@@ -1,4 +1,4 @@
-import { OrderItem } from "./OrderItem.js";
+import { OrderItem } from "./Components/OrderItem.js";
 import { PriceStorage } from "./Storage/PriceStorage.js";
 import { ProfitStorage } from "./Storage/ProfitStorage.js";
 import { BinanceSocket } from "./Utils/BinanceSocket.js";

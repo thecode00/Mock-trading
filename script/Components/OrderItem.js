@@ -1,9 +1,11 @@
+import Component from "./Component";
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
 const orderPositionList = document.getElementById("open-position-list");
 // TODO: 클래스 컴포넌트로 만들기
-export class OrderItem {
+export class OrderItem extends Component {
     constructor(parent, orderPrice, margin, ticker, orderType, stage, curPrice, profitStorage) {
+        super(parent);
         this.profitStorage = profitStorage;
         this.id = new Date().getMilliseconds().toString();
         this.orderItemButtonHandler = () => {

@@ -1,4 +1,5 @@
-import { ProfitStorage } from "./Storage/ProfitStorage";
+import { ProfitStorage } from "../Storage/ProfitStorage";
+import Component from "./Component";
 
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
@@ -6,7 +7,7 @@ const orderPositionList = document.getElementById("open-position-list");
 
 // TODO: 클래스 컴포넌트로 만들기
 
-export class OrderItem {
+export class OrderItem extends Component {
   id = new Date().getMilliseconds().toString();
   parent: HTMLElement; // container를 넣을 부모 요소
   orderPrice: number;
@@ -27,6 +28,7 @@ export class OrderItem {
     curPrice: number,
     private profitStorage: ProfitStorage
   ) {
+    super(parent);
     this.parent = parent;
     this.orderPrice = orderPrice;
     this.margin = margin;
