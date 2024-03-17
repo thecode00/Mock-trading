@@ -1,4 +1,4 @@
-import { PriceStorage } from "../PriceStorage";
+import { PriceStorage } from "../Storage/PriceStorage";
 
 export class BinanceSocket {
 	ws: WebSocket = new WebSocket(`wss://stream.binance.com:9443/ws`);
