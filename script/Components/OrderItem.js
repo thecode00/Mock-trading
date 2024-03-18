@@ -24,9 +24,12 @@ export class OrderItem extends HTMLElement {
         this.stage = stage;
         this.curPrice = curPrice;
         this.container = this.createContainer();
-        //
         this.attachShadow({ mode: "open" });
         this.render();
+    }
+    // 요소가 DOM에 추가되었을떄 실행되는 함수
+    connectedCallback() {
+        console.log("Element attach to DOM!");
     }
     _deleteFromDOM() {
         this.parent.removeChild(this.container);
