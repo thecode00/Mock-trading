@@ -25,19 +25,32 @@ export class OrderItem extends HTMLElement {
         this.curPrice = curPrice;
         this.container = this.createContainer();
         this.attachShadow({ mode: "open" });
+        this.shadowRoot.innerHTML = `
+      <div class="container">
+        <p></p>
+        <p id="order-price"></p>
+        <p id="order-amount"></p>
+        <button></button>
+      </div>
+    `;
         this.render();
     }
     // 요소가 DOM에 추가되었을떄 실행되는 함수
     connectedCallback() {
+        var _a;
         console.log("Element attach to DOM!");
+        (_a = this.shadowRoot) === null || _a === void 0 ? void 0 : _a.appendChild(this.container);
+    }
+    // 요소가 DOM에서 제거될때 실행되는 함수
+    disconnectedCallback() {
+        var _a;
+        (_a = this.shadowRoot) === null || _a === void 0 ? void 0 : _a.removeChild(this.container);
     }
     _deleteFromDOM() {
         this.parent.removeChild(this.container);
     }
     createContainer() {
         const container = document.createElement("div");
-        const orderStageParagraph = document.createElement("p");
-        orderStageParagraph.textContent = this.stage;
         const tickerParagraph = document.createElement("p");
         tickerParagraph.textContent = this.ticker;
         const orderPriceParagraph = document.createElement("p");
