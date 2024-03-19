@@ -15,29 +15,29 @@
     <script defer src="script/app.js" type="module"></script>
   </head>
   <body>
-    <section class="container">
-      <div>
+    <section class="container row col-5">
+      <div class="col-md-3 col-lg-5">
         <h1 id="ticker-h1">BTC</h1>
         <h1 id="ticker-price"></h1>
+        <!-- TODO: 반응형 검색 넣기 -->
         <input
           type="text"
           placeholder="Enter ticker..."
+          class="form-control"
           id="change-ticker-input"
         />
-        <button id="change-ticker-button" class="btn-primary">
+        <button id="change-ticker-button" class="btn btn-primary">
           Change Ticker
         </button>
       </div>
-      <div>
-        <p>$0</p>
+      <div class="col-md-3 col-lg-5">
+        <p id="profit">$0</p>
       </div>
     </section>
 
     <section class="container">
-      <!-- 반응형 검색 넣기 -->
-      <!-- Css 트위터 그 컴포넌트 라이브러리 쓰기 -->
-      <form id="order-form">
-        <label for="price-input">Price</label>
+      <form id="order-form" class="needs-validation">
+        <label for="price-input" class="form-label">Price</label>
         <div class="input-group mb-3">
           <span class="input-group-text">$</span>
           <input
@@ -47,7 +47,7 @@
             aria-label="Amount (to the nearest dollar)"
           />
         </div>
-        <label for="margin-input">Margin</label>
+        <label for="margin-input" class="form-label">Margin</label>
         <div class="input-group mb-3">
           <span class="input-group-text">$</span>
           <input
