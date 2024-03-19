@@ -38,6 +38,14 @@ export class OrderItem extends HTMLElement {
     this.container = this.createContainer();
 
     this.attachShadow({ mode: "open" });
+    this.render();
+  }
+
+  // 요소가 DOM에 추가되었을떄 실행되는 함수
+  connectedCallback() {
+    console.log("Element attach to DOM!");
+    this.checkPrice();
+    this.setAttribute("price", this.curPrice.toString());
     this.shadowRoot!.innerHTML = `
       <div class="container">
         <p></p>
@@ -46,18 +54,30 @@ export class OrderItem extends HTMLElement {
         <button></button>
       </div>
     `;
-    this.render();
-  }
-
-  // 요소가 DOM에 추가되었을떄 실행되는 함수
-  connectedCallback() {
-    console.log("Element attach to DOM!");
     this.shadowRoot?.appendChild(this.container);
   }
 
   // 요소가 DOM에서 제거될때 실행되는 함수
   disconnectedCallback() {
-    this.shadowRoot?.removeChild(this.container);
+    console.log("Disconnected from DOM!");
+  }
+
+  // 속성이 변경되었을때 실행되는 함수
+  attributeChangedCallback(name: any, oldValue: any, newValue: any) {
+    // 값이 같을경우 성능을 위해 작업 방지
+    if (oldValue === newValue) {
+      return;
+    }
+    switch (name) {
+      case "price":
+        this.curPrice = newValue;
+        break;
+    }
+    this.render();
+  }
+
+  static get observedAttributes() {
+    return ["price"];
   }
 
   orderItemButtonHandler = () => {
@@ -68,44 +88,50 @@ export class OrderItem extends HTMLElement {
           (1 +
             parseFloat(
               OrderItem.calcProfitRate(this.curPrice, this.orderPrice)
-            ))
+            )) -
+          this.margin
       );
     }
     this._deleteFromDOM();
   };
 
   _deleteFromDOM() {
-    this.parent.removeChild(this.container);
+    // this.parent.removeChild(this.container);
   }
 
   createContainer() {
     const container = document.createElement("div");
-    const tickerParagraph = document.createElement("p");
-    tickerParagraph.textContent = this.ticker;
+    try {
+      const tickerParagraph = document.createElement("p");
+      tickerParagraph.textContent = this.ticker;
 
-    const orderPriceParagraph = document.createElement("p");
-    orderPriceParagraph.textContent = this.orderPrice.toString();
-    orderPriceParagraph.id = "order-price";
+      const orderPriceParagraph = document.createElement("p");
+      orderPriceParagraph.textContent = this.orderPrice.toString();
+      orderPriceParagraph.id = "order-price";
 
-    const orderAmountParagraph = document.createElement("p");
-    orderAmountParagraph.textContent = this.margin.toString();
-    orderAmountParagraph.id = "order-amount";
+      const orderAmountParagraph = document.createElement("p");
+      orderAmountParagraph.textContent = this.margin.toString();
+      orderAmountParagraph.id = "order-amount";
 
-    const btn = document.createElement("button");
-    btn.addEventListener("click", this.orderItemButtonHandler);
-    btn.textContent = "Cancel";
+      const btn = document.createElement("button");
+      btn.addEventListener("click", this.orderItemButtonHandler);
+      btn.textContent = "Cancel";
 
-    container.append(
-      tickerParagraph,
-      orderPriceParagraph,
-      orderAmountParagraph,
-      btn
-    );
+      container.append(
+        tickerParagraph,
+        orderPriceParagraph,
+        orderAmountParagraph,
+        btn
+      );
+    } catch {
+      console.log(1);
+    }
+
     return container;
   }
 
   attach() {
-    this.parent.appendChild(this.container);
+    orderPositionList!.appendChild(this);
   }
 
   checkPrice() {
@@ -131,12 +157,18 @@ export class OrderItem extends HTMLElement {
   }
 
   render() {
-    this.checkPrice();
     if (this.stage === ORDER_POSITION) {
       this.container.querySelector("#order-amount")!.textContent =
         OrderItem.calcProfitRate(this.curPrice, this.orderPrice).toString();
     }
   }
-}
 
-customElements.define("order-item", OrderItem);
+  /**
+   * 클래스의 속성을 변경하는 함수
+   * @param name 속성 이름
+   * @param value 속성 값
+   */
+  setClassAttribute(name: string, value: any) {
+    this.setAttribute(name, value);
+  }
+}

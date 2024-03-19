@@ -12,7 +12,8 @@ export class OrderItem extends HTMLElement {
             if (this.stage === ORDER_POSITION) {
                 this.profitStorage.recordProfit(this.margin *
                     (1 +
-                        parseFloat(OrderItem.calcProfitRate(this.curPrice, this.orderPrice))));
+                        parseFloat(OrderItem.calcProfitRate(this.curPrice, this.orderPrice))) -
+                    this.margin);
             }
             this._deleteFromDOM();
         };
@@ -25,6 +26,14 @@ export class OrderItem extends HTMLElement {
         this.curPrice = curPrice;
         this.container = this.createContainer();
         this.attachShadow({ mode: "open" });
+        this.render();
+    }
+    // 요소가 DOM에 추가되었을떄 실행되는 함수
+    connectedCallback() {
+        var _a;
+        console.log("Element attach to DOM!");
+        this.checkPrice();
+        this.setAttribute("price", this.curPrice.toString());
         this.shadowRoot.innerHTML = `
       <div class="container">
         <p></p>
@@ -33,40 +42,54 @@ export class OrderItem extends HTMLElement {
         <button></button>
       </div>
     `;
-        this.render();
-    }
-    // 요소가 DOM에 추가되었을떄 실행되는 함수
-    connectedCallback() {
-        var _a;
-        console.log("Element attach to DOM!");
         (_a = this.shadowRoot) === null || _a === void 0 ? void 0 : _a.appendChild(this.container);
     }
     // 요소가 DOM에서 제거될때 실행되는 함수
     disconnectedCallback() {
-        var _a;
-        (_a = this.shadowRoot) === null || _a === void 0 ? void 0 : _a.removeChild(this.container);
+        console.log("Disconnected from DOM!");
+    }
+    // 속성이 변경되었을때 실행되는 함수
+    attributeChangedCallback(name, oldValue, newValue) {
+        // 값이 같을경우 성능을 위해 작업 방지
+        if (oldValue === newValue) {
+            return;
+        }
+        switch (name) {
+            case "price":
+                this.curPrice = newValue;
+                break;
+        }
+        this.render();
+    }
+    static get observedAttributes() {
+        return ["price"];
     }
     _deleteFromDOM() {
-        this.parent.removeChild(this.container);
+        // this.parent.removeChild(this.container);
     }
     createContainer() {
         const container = document.createElement("div");
-        const tickerParagraph = document.createElement("p");
-        tickerParagraph.textContent = this.ticker;
-        const orderPriceParagraph = document.createElement("p");
-        orderPriceParagraph.textContent = this.orderPrice.toString();
-        orderPriceParagraph.id = "order-price";
-        const orderAmountParagraph = document.createElement("p");
-        orderAmountParagraph.textContent = this.margin.toString();
-        orderAmountParagraph.id = "order-amount";
-        const btn = document.createElement("button");
-        btn.addEventListener("click", this.orderItemButtonHandler);
-        btn.textContent = "Cancel";
-        container.append(tickerParagraph, orderPriceParagraph, orderAmountParagraph, btn);
+        try {
+            const tickerParagraph = document.createElement("p");
+            tickerParagraph.textContent = this.ticker;
+            const orderPriceParagraph = document.createElement("p");
+            orderPriceParagraph.textContent = this.orderPrice.toString();
+            orderPriceParagraph.id = "order-price";
+            const orderAmountParagraph = document.createElement("p");
+            orderAmountParagraph.textContent = this.margin.toString();
+            orderAmountParagraph.id = "order-amount";
+            const btn = document.createElement("button");
+            btn.addEventListener("click", this.orderItemButtonHandler);
+            btn.textContent = "Cancel";
+            container.append(tickerParagraph, orderPriceParagraph, orderAmountParagraph, btn);
+        }
+        catch (_a) {
+            console.log(1);
+        }
         return container;
     }
     attach() {
-        this.parent.appendChild(this.container);
+        orderPositionList.appendChild(this);
     }
     checkPrice() {
         if (this.stage === ORDER_OPEN) {
@@ -89,11 +112,17 @@ export class OrderItem extends HTMLElement {
         return (((curPrice - orderPrice) / orderPrice) * 100).toFixed(2);
     }
     render() {
-        this.checkPrice();
         if (this.stage === ORDER_POSITION) {
             this.container.querySelector("#order-amount").textContent =
                 OrderItem.calcProfitRate(this.curPrice, this.orderPrice).toString();
         }
     }
+    /**
+     * 클래스의 속성을 변경하는 함수
+     * @param name 속성 이름
+     * @param value 속성 값
+     */
+    setClassAttribute(name, value) {
+        this.setAttribute(name, value);
+    }
 }
-customElements.define("order-item", OrderItem);
