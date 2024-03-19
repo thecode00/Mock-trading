@@ -1,5 +1,9 @@
+import { app } from "../app";
+
 export class ProfitStorage {
   private profit = 0;
+  private observer: app[] = [];
+
   constructor() {
     try {
       const p = parseFloat(localStorage.getItem("profit"));
@@ -13,5 +17,18 @@ export class ProfitStorage {
     this.profit += profit;
     localStorage.setItem("profit", this.profit.toString());
     console.log(`Profit recorded!: ${localStorage.getItem("profit")}`);
+    this.notify();
+  }
+
+  getProfit() {
+    return this.profit;
+  }
+
+  subscribe(observer: app) {
+    this.observer.push(observer);
+  }
+
+  notify() {
+    this.observer.map((item) => item.updateProfit());
   }
 }

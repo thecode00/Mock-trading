@@ -7,9 +7,10 @@ const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
 
 const openOrderList = document.getElementById("open-order-list");
+const profitParagraph = document.getElementById("profit");
 
 // TODO: 각 부분 모듈화
-class app {
+export class app {
   socket: BinanceSocket;
   changeTickerButton = document.getElementById(
     "change-ticker-button"
@@ -27,6 +28,9 @@ class app {
     this.changeTickerButton.addEventListener("click", this.changeTickerHandler);
     this.p = document.getElementById("ticker-h1") as HTMLParagraphElement;
     this.orderForm.addEventListener("submit", this.addOrder.bind(this));
+
+    this.profitStorage.subscribe(this);
+    this.updateProfit();
   }
 
   changeTickerHandler = () => {
@@ -52,6 +56,7 @@ class app {
     const marginElement = this.orderForm.querySelector(
       "#margin-input"
     ) as HTMLInputElement;
+
     const margin = parseFloat(marginElement.value);
     const orderItem = new OrderItem(
       openOrderList!,
@@ -64,8 +69,16 @@ class app {
       this.profitStorage
     );
     this.priceStorage.subscribe(this.showTicker, orderItem);
-    orderItem.attach();
+    openOrderList?.appendChild(orderItem);
+  }
+
+  updateProfit() {
+    console.log("profit update");
+    profitParagraph!.textContent = `$${this.profitStorage
+      .getProfit()
+      .toFixed(2)
+      .toString()}`;
   }
 }
-
+customElements.define("order-item", OrderItem);
 new app();
