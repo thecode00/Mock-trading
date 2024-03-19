@@ -37,8 +37,7 @@ export class PriceStorage {
       this.observers[ticker] = [];
     }
     this.observers[ticker].map((item) => {
-      item.curPrice = this.tickerPrices[item.ticker];
-      item.render();
+      item.setClassAttribute("price", this.tickerPrices[ticker]);
     });
   }
 
