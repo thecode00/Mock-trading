@@ -15,59 +15,67 @@
     <script defer src="script/app.js" type="module"></script>
   </head>
   <body>
-    <section class="container row col-5">
-      <div class="col-md-3 col-lg-5">
-        <h1 id="ticker-h1">BTC</h1>
-        <h1 id="ticker-price"></h1>
-        <!-- TODO: 반응형 검색 넣기 -->
-        <input
-          type="text"
-          placeholder="Enter ticker..."
-          class="form-control"
-          id="change-ticker-input"
-        />
-        <button id="change-ticker-button" class="btn btn-primary">
-          Change Ticker
-        </button>
-      </div>
-      <div class="col-md-3 col-lg-5">
-        <p id="profit">$0</p>
-      </div>
-    </section>
+    <div class="col-lg-8 mx-auto p-4 py-md-5">
+      <section class="container mb-3 border-bottom">
+        <div class="col">
+          <h1 id="ticker-h1">BTC</h1>
+          <h1 id="ticker-price"></h1>
+          <!-- TODO: 반응형 검색 넣기 -->
+          <input
+            type="text"
+            placeholder="Enter ticker..."
+            class="form-control"
+            id="change-ticker-input"
+            required
+          />
+          <button id="change-ticker-button" class="btn btn-warning">
+            Change Ticker
+          </button>
+        </div>
+        <div class="col">
+          <p id="profit">$0</p>
+        </div>
+      </section>
 
-    <section class="container">
-      <form id="order-form" class="needs-validation">
-        <label for="price-input" class="form-label">Price</label>
-        <div class="input-group mb-3">
-          <span class="input-group-text">$</span>
-          <input
-            type="text"
-            class="form-control"
-            id="price-input"
-            aria-label="Amount (to the nearest dollar)"
-          />
-        </div>
-        <label for="margin-input" class="form-label">Margin</label>
-        <div class="input-group mb-3">
-          <span class="input-group-text">$</span>
-          <input
-            type="text"
-            class="form-control"
-            id="margin-input"
-            aria-label="Amount (to the nearest dollar)"
-          />
-        </div>
-        <button type="submit" id="trade-button" class="btn btn-primary">
-          Order!!
-        </button>
-      </form>
-    </section>
-    <section class="container" id="open-order-list">
-      <p>Open order</p>
-    </section>
-    <section class="container" id="open-position-list">
-      <p>Open position</p>
-    </section>
-    <div id="app"></div>
+      <section class="container">
+        <form id="order-form" class="needs-validation">
+          <label for="price-input" class="form-label">Price</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text">$</span>
+            <input
+              type="number"
+              class="form-control"
+              id="price-input"
+              aria-label="Amount (to the nearest dollar)"
+              required
+            />
+          </div>
+          <label for="margin-input" class="form-label">Margin</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text">$</span>
+            <input
+              type="number"
+              class="form-control"
+              id="margin-input"
+              aria-label="Amount (to the nearest dollar)"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            id="trade-button"
+            class="btn btn-outline-success"
+          >
+            Buy!!
+          </button>
+        </form>
+      </section>
+      <section class="container" id="open-order-list">
+        <p>Open order</p>
+      </section>
+      <section class="container" id="open-position-list">
+        <p>Open position</p>
+      </section>
+    </div>
   </body>
 </html>

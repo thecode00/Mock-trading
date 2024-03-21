@@ -101,6 +101,7 @@ export class OrderItem extends HTMLElement {
 
   createContainer() {
     const container = document.createElement("div");
+    container.classList.add("row");
     try {
       const tickerParagraph = document.createElement("p");
       tickerParagraph.textContent = this.ticker;
