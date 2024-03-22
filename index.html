@@ -15,9 +15,9 @@
     <script defer src="script/app.js" type="module"></script>
   </head>
   <body>
-    <div class="col-lg-8 mx-auto p-4 py-md-5 rounded">
-      <section class="container mb-3 border-bottom">
-        <div class="col">
+    <div class="col-lg-8 mx-auto rounded p-4 mh-">
+      <section class="container mb-3 border-bottom row">
+        <div class="col text-center d-flex flex-column justify-content-between">
           <h1 id="ticker-h1">BTC</h1>
           <h1 id="ticker-price"></h1>
           <!-- TODO: 반응형 검색 넣기 -->
@@ -32,34 +32,40 @@
             Change Ticker
           </button>
         </div>
-        <div class="col">
-          <p id="profit">$0</p>
+        <div class="col text-center">
+          <h1 id="profit">$0</h1>
         </div>
       </section>
 
       <section class="container">
         <form id="order-form" class="needs-validation">
-          <label for="price-input" class="form-label">Price</label>
-          <div class="input-group mb-3">
-            <span class="input-group-text">$</span>
-            <input
-              type="number"
-              class="form-control"
-              id="price-input"
-              aria-label="Amount (to the nearest dollar)"
-              required
-            />
-          </div>
-          <label for="margin-input" class="form-label">Margin</label>
-          <div class="input-group mb-3">
-            <span class="input-group-text">$</span>
-            <input
-              type="number"
-              class="form-control"
-              id="margin-input"
-              aria-label="Amount (to the nearest dollar)"
-              required
-            />
+          <div class="row">
+            <div class="col-md-6">
+              <label for="price-input" class="form-label">Price</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="price-input"
+                  aria-label="Amount (to the nearest dollar)"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="margin-input" class="form-label">Margin</label>
+              <div class="input-group mb-3">
+                <span class="input-group-text">$</span>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="margin-input"
+                  aria-label="Amount (to the nearest dollar)"
+                  required
+                />
+              </div>
+            </div>
           </div>
           <button
             type="submit"

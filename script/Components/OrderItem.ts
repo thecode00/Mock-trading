@@ -102,6 +102,9 @@ export class OrderItem extends HTMLElement {
   createContainer() {
     const container = document.createElement("div");
     container.classList.add("row");
+
+    const rowDiv = document.createElement("div");
+    rowDiv.classList.add("row");
     try {
       const tickerParagraph = document.createElement("p");
       tickerParagraph.textContent = this.ticker;
@@ -116,14 +119,16 @@ export class OrderItem extends HTMLElement {
 
       const btn = document.createElement("button");
       btn.addEventListener("click", this.orderItemButtonHandler);
+      btn.classList.add("btn", "btn-primary");
       btn.textContent = "Cancel";
 
-      container.append(
+      rowDiv.append(
         tickerParagraph,
         orderPriceParagraph,
         orderAmountParagraph,
         btn
       );
+      container.append(rowDiv);
     } catch {
       console.log(1);
     }
