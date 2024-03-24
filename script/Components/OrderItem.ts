@@ -96,7 +96,7 @@ export class OrderItem extends HTMLElement {
   };
 
   _deleteFromDOM() {
-    // this.parent.removeChild(this.container);
+    this.remove();
   }
 
   createContainer() {

@@ -65,7 +65,7 @@ export class OrderItem extends HTMLElement {
         return ["price"];
     }
     _deleteFromDOM() {
-        // this.parent.removeChild(this.container);
+        this.remove();
     }
     createContainer() {
         const container = document.createElement("div");
