@@ -1,5 +1,4 @@
 import { ProfitStorage } from "../Storage/ProfitStorage";
-
 const ORDER_OPEN = "order";
 const ORDER_POSITION = "position";
 const orderPositionList = document.getElementById("open-position-list");
@@ -7,7 +6,7 @@ const orderPositionList = document.getElementById("open-position-list");
 // TODO: 클래스 컴포넌트로 만들기
 
 export class OrderItem extends HTMLElement {
-  id = new Date().getMilliseconds().toString();
+  id = crypto.randomUUID();
   parent: HTMLElement; // container를 넣을 부모 요소
   orderPrice: number;
   margin: number;
@@ -47,6 +46,7 @@ export class OrderItem extends HTMLElement {
     this.checkPrice();
     this.setAttribute("price", this.curPrice.toString());
     this.shadowRoot!.innerHTML = `
+      <link href="bootstrap.min.css" rel="stylesheet"/>
       <div class="container">
         <p></p>
         <p id="order-price"></p>

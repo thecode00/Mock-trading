@@ -35,6 +35,7 @@ export class OrderItem extends HTMLElement {
         this.checkPrice();
         this.setAttribute("price", this.curPrice.toString());
         this.shadowRoot.innerHTML = `
+      <link href="bootstrap.min.css" rel="stylesheet"/>
       <div class="container">
         <p></p>
         <p id="order-price"></p>
