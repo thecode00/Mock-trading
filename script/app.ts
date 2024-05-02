@@ -63,7 +63,7 @@ export class app {
       targetPrice,
       margin,
       this.showTicker,
-      1,
+      0,
       ORDER_OPEN,
       this.priceStorage.getPrice(this.showTicker),
       this.profitStorage

@@ -9,17 +9,20 @@ export class OrderItem extends HTMLElement {
   id = crypto.randomUUID();
   parent: HTMLElement; // container를 넣을 부모 요소
   orderPrice: number;
-  margin: number;
+  amount: number;
   ticker: string;
   orderType: number; // 0 = Long, 1 = Short
   stage: string; // 주문의 현재 상태
   curPrice: number; // 티커의 현재 가격
-  container: HTMLDivElement;
+
+  static get observedAttributes() {
+    return ["price"];
+  }
 
   constructor(
     parent: HTMLElement,
     orderPrice: number,
-    margin: number,
+    amount: number,
     ticker: string,
     orderType: 0 | 1,
     stage: string,
@@ -29,14 +32,13 @@ export class OrderItem extends HTMLElement {
     super();
     this.parent = parent;
     this.orderPrice = orderPrice;
-    this.margin = margin;
+    this.amount = amount;
     this.ticker = ticker;
     this.orderType = orderType;
     this.stage = stage;
     this.curPrice = curPrice;
-    this.container = this.createContainer();
+    this.createContainer();
 
-    this.attachShadow({ mode: "open" });
     this.render();
   }
 
@@ -45,16 +47,6 @@ export class OrderItem extends HTMLElement {
     console.log("Element attach to DOM!");
     this.checkPrice();
     this.setAttribute("price", this.curPrice.toString());
-    this.shadowRoot!.innerHTML = `
-      <link href="bootstrap.min.css" rel="stylesheet"/>
-      <div class="container">
-        <p></p>
-        <p id="order-price"></p>
-        <p id="order-amount"></p>
-        <button></button>
-      </div>
-    `;
-    this.shadowRoot?.appendChild(this.container);
   }
 
   // 요소가 DOM에서 제거될때 실행되는 함수
@@ -76,20 +68,16 @@ export class OrderItem extends HTMLElement {
     this.render();
   }
 
-  static get observedAttributes() {
-    return ["price"];
-  }
-
   orderItemButtonHandler = () => {
-    console.log("btn clickd", this.stage);
+    console.log("orderItem btn clickd", this.stage);
     if (this.stage === ORDER_POSITION) {
       this.profitStorage.recordProfit(
-        this.margin *
+        this.amount *
           (1 +
             parseFloat(
               OrderItem.calcProfitRate(this.curPrice, this.orderPrice)
             )) -
-          this.margin
+          this.amount
       );
     }
     this._deleteFromDOM();
@@ -100,60 +88,57 @@ export class OrderItem extends HTMLElement {
   }
 
   createContainer() {
-    const container = document.createElement("div");
-    container.classList.add("row");
-
-    const rowDiv = document.createElement("div");
-    rowDiv.classList.add("row");
-    try {
-      const tickerParagraph = document.createElement("p");
-      tickerParagraph.textContent = this.ticker;
-
-      const orderPriceParagraph = document.createElement("p");
-      orderPriceParagraph.textContent = this.orderPrice.toString();
-      orderPriceParagraph.id = "order-price";
-
-      const orderAmountParagraph = document.createElement("p");
-      orderAmountParagraph.textContent = this.margin.toString();
-      orderAmountParagraph.id = "order-amount";
-
-      const btn = document.createElement("button");
-      btn.addEventListener("click", this.orderItemButtonHandler);
-      btn.classList.add("btn", "btn-primary");
-      btn.textContent = "Cancel";
-
-      rowDiv.append(
-        tickerParagraph,
-        orderPriceParagraph,
-        orderAmountParagraph,
-        btn
-      );
-      container.append(rowDiv);
-    } catch {
-      console.log(1);
-    }
-
-    return container;
+    this.innerHTML = `
+    <div>
+      <div class="row">
+        <div class="col-md-6">
+          <p>${this.ticker.toUpperCase()} / ${
+      this.orderType ? "Sell" : "Buy"
+    }</p>
+          <p>${new Date(Date.now()).toUTCString()}
+        </div>
+      </div>
+      <div id="orderInfo">
+        <p id="order-price">OrderPrice: ${this.orderPrice}</p>
+        <p id="order-amount">Amount(usdt): ${this.amount}</p>
+      </div>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button class="btn btn-primary w-25">Cancel</button>
+      </div>
+    </div>
+    `;
+    console.log(this.querySelector("button"));
+    this.querySelector("button")?.addEventListener(
+      "click",
+      this.orderItemButtonHandler
+    );
   }
 
-  attach() {
-    orderPositionList!.appendChild(this);
+  attach(target: HTMLElement) {
+    target.appendChild(this);
   }
 
   checkPrice() {
     if (this.stage === ORDER_OPEN) {
       // 주문이 체결된 경우
       if (this.curPrice <= this.orderPrice) {
-        this.stage = ORDER_POSITION;
         console.log("Position open!");
         // 주문이 체결된후 ui변경
+        const orderInfoDiv = this.querySelector("orderInfo");
+        this.stage = ORDER_POSITION;
         this.orderPrice = this.curPrice;
-        this.container.querySelector("#order-price")!.textContent =
-          this.orderPrice.toString();
-        this.container.querySelector("button")!.textContent = "Sell";
+        this.querySelector(
+          "#order-price"
+        )!.textContent = `EntryPrice: ${this.orderPrice}`;
+        this.querySelector("button")!.textContent = "Sell";
+
+        const profitParagraph = document.createElement("p");
+        profitParagraph.id = "profit";
+        this.querySelector("#orderInfo")?.append(profitParagraph);
         // 요소 위치 변경
         this.parent = orderPositionList!;
-        this.attach();
+        this.attach(this.parent);
+        this.render();
       }
     }
   }
@@ -164,8 +149,12 @@ export class OrderItem extends HTMLElement {
 
   render() {
     if (this.stage === ORDER_POSITION) {
-      this.container.querySelector("#order-amount")!.textContent =
-        OrderItem.calcProfitRate(this.curPrice, this.orderPrice).toString();
+      this.querySelector("#profit")!.textContent = `Profit: ${
+        this.curPrice
+      }(${OrderItem.calcProfitRate(
+        this.curPrice,
+        this.orderPrice
+      ).toString()}%)`;
     }
   }
 

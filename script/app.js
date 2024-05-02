@@ -36,7 +36,7 @@ export class app {
         const targetPrice = parseFloat(targetPriceElement.value);
         const marginElement = this.orderForm.querySelector("#margin-input");
         const margin = parseFloat(marginElement.value);
-        const orderItem = new OrderItem(openOrderList, targetPrice, margin, this.showTicker, 1, ORDER_OPEN, this.priceStorage.getPrice(this.showTicker), this.profitStorage);
+        const orderItem = new OrderItem(openOrderList, targetPrice, margin, this.showTicker, 0, ORDER_OPEN, this.priceStorage.getPrice(this.showTicker), this.profitStorage);
         this.priceStorage.subscribe(this.showTicker, orderItem);
         openOrderList === null || openOrderList === void 0 ? void 0 : openOrderList.appendChild(orderItem);
     }
