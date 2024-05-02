@@ -21,7 +21,7 @@ export class BinanceSocket {
     this.ws.onmessage = (msg) => {
       const json = JSON.parse(msg.data);
       if (json.s === `${this.ticker}usdt`.toUpperCase()) {
-        this.p!.innerText = json.p;
+        this.p!.innerText = parseFloat(json.p).toString();
       }
       // 티커의 마지막에 붙어있는 usdt제거
       this.storage.setPrice(
