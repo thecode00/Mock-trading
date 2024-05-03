@@ -59,20 +59,16 @@ export class OrderItem extends HTMLElement {
     createContainer() {
         var _a;
         this.innerHTML = `
-    <div>
-      <div class="row">
-        <div class="col-md-6">
-          <p>${this.ticker.toUpperCase()} / ${this.orderType ? "Sell" : "Buy"}</p>
-          <p>${new Date(Date.now()).toUTCString()}
-        </div>
+    <div class="card ">
+      <div class="card-body">
+          <h5 class="card-title">${this.ticker.toUpperCase()} / ${this.orderType ? "Sell" : "Buy"}</h5>
+          <p class="card-text">${new Date(Date.now()).toUTCString()}
+          </div>
+      <div id="orderInfo" >
+          <p id="order-price" class="card-text">OrderPrice: ${this.orderPrice}</p>
+          <p id="order-amount" class="card-text">Amount(usdt): ${this.amount}</p>
       </div>
-      <div id="orderInfo">
-        <p id="order-price">OrderPrice: ${this.orderPrice}</p>
-        <p id="order-amount">Amount(usdt): ${this.amount}</p>
-      </div>
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="btn btn-primary w-25">Cancel</button>
-      </div>
+      <button class="btn btn-primary w-25">Cancel</button>
     </div>
     `;
         console.log(this.querySelector("button"));
