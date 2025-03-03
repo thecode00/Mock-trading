@@ -48,3 +48,22 @@ export class PriceStorage {
     this.observers[ticker].push(item);
   }
 }
+
+let tickers: string[] = [];
+let listeners: any = []; // TODO: 컴포넌트 타입 제한하기
+
+export const priceStore = {
+  addTicker(ticker: string) {
+    tickers = [...tickers, ticker];
+  },
+
+  subscribe(listener: any) {
+    listeners = [...listeners, listener];
+    return () => {
+      listeners = listeners.filter((l: any) => l !== listener);
+    };
+  },
+  getSnatshot() {
+    return tickers;
+  },
+};
