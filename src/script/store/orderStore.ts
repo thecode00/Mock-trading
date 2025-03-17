@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { useCryptoStore } from "./priceStore";
+import { OrderData } from "../../types/order";
 
 interface OrderStore {
   openPositions: OrderData[];
@@ -8,15 +9,8 @@ interface OrderStore {
   checkOrderOpen: () => void;
 }
 
-interface OrderData {
-  type: string;
-  price: number;
-  amount: number;
-  id: string;
-}
-
 export const useOrderStore = create<OrderStore>((set, get) => ({
-  openPositions: [{ type: "l", price: 0, amount: 0, id: "sdfsdfs'" }],
+  openPositions: [],
   orders: [],
 
   addOrder(order: OrderData) {
@@ -24,17 +18,22 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
     console.log(get().openPositions, get().orders);
   },
 
-  // order중에 체결되는 order를 찾는 함수
+  // order 중에 체결되는 order를 찾는 함수
   checkOrderOpen() {
     const tickerData = useCryptoStore.getState().tickerData;
+    if (!tickerData) {
+      return;
+    }
+    const price = parseFloat(tickerData.p);
+
     set({
       orders: get().orders.filter((item) => {
-        console.log(get().openPositions);
         if (
-          (item.type === "long" && item.price >= tickerData.price) ||
-          (item.type === "short" && item.price <= tickerData.price)
+          (item.type === "long" && item.price >= price) ||
+          (item.type === "short" && item.price <= price)
         ) {
-          set({ openPositions: { ...get().openPositions, item } });
+          // 배열에 추가하는 방식으로 수정
+          set({ openPositions: [...get().openPositions, item] });
           return false;
         }
         return true;

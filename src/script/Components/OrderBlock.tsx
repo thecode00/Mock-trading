@@ -5,6 +5,7 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Grid2,
   TextField,
 } from "@mui/material";
 import { useState } from "react";
@@ -34,30 +35,39 @@ function OrderBlock() {
   }
 
   function handleOrder(order: OrderData) {
+    if (isNaN(order.amount) || order.amount < 0) {
+      console.log(1);
+    }
     addOrder(order);
   }
 
   return (
     <Box>
-      <Card>
+      <Card sx={{ height: "100%", flexGrow: 1 }}>
         <CardHeader title="Order" />
         <CardContent>
-          <TextField
-            id="amount-input"
-            name="amount"
-            label="Amount"
-            variant="outlined"
-            type="number"
-            onChange={handleChange}
-          />
-          <TextField
-            id="price-input"
-            name="price"
-            label="Price"
-            variant="outlined"
-            type="number"
-            onChange={handleChange}
-          />
+          <Grid2 container sx={{}} spacing={2}>
+            <Grid2>
+              <TextField
+                id="amount-input"
+                name="amount"
+                label="Amount"
+                variant="outlined"
+                type="number"
+                onChange={handleChange}
+              />
+            </Grid2>
+            <Grid2>
+              <TextField
+                id="price-input"
+                name="price"
+                label="Price"
+                variant="outlined"
+                type="number"
+                onChange={handleChange}
+              />
+            </Grid2>
+          </Grid2>
         </CardContent>
         <CardActions>
           <Button
@@ -76,7 +86,7 @@ function OrderBlock() {
             Buy/Long
           </Button>
           <Button
-            variant="outlined"
+            variant="contained"
             color="error"
             sx={{ textTransform: "none" }}
             onClick={() => {

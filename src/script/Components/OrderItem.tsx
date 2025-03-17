@@ -1,7 +1,17 @@
-import { Box, Card, CardContent, ListItem, Typography } from "@mui/material";
-import { useState } from "react";
+import { Box, Card, CardContent, Typography } from "@mui/material";
 
-export function OrderItem({ data }) {
+interface OrderData {
+  type: string;
+  price: number;
+  amount: number;
+  id: string;
+}
+
+interface OrderItemProps {
+  data: OrderData;
+}
+
+export function OrderItem({ data }: OrderItemProps) {
   return (
     <Box>
       <Card>

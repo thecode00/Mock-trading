@@ -1,10 +1,12 @@
 import { create } from "zustand";
+import { BinanceTrade } from "../../types/binance";
+import { useOrderStore } from "./orderStore";
 
 const BASE_URL = "wss://stream.binance.com:9443/ws";
 
 interface CryptoStore {
   selectedTicker: string;
-  tickerData: MessageEvent | null;
+  tickerData: MessageEvent<BinanceTrade> | null;
   setTicker: (newTicker: string) => void;
   connectWebsocket: () => void;
   disconnectWebsocket: () => void;
@@ -29,8 +31,10 @@ export const useCryptoStore = create<CryptoStore>((set, get) => {
       );
     };
     socket.onmessage = (msg) => {
-      set({ tickerData: msg });
-      console.log(msg);
+      const tickerData = JSON.parse(msg.data);
+      set({ tickerData });
+
+      useOrderStore.getState().checkOrderOpen();
     };
   };
 
