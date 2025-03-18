@@ -1,8 +1,7 @@
-import React from "react";
 import { useProfitStore } from "../store/profitStore";
 import { Card, Typography } from "@mui/material";
 import { useCryptoStore } from "../store/priceStore";
-import { LineChart } from "@mui/x-charts";
+import PriceChart from "./PriceChart";
 
 function CoinBillboard() {
   const { profit } = useProfitStore();
@@ -11,11 +10,12 @@ function CoinBillboard() {
   return (
     <Card sx={{ height: "100%", flexGrow: 1 }}>
       <Typography>
-        {selectedTicker.toUpperCase()} Price: {tickerData ? tickerData.p : 0}
+        {selectedTicker.toUpperCase()} Price:{" "}
+        {tickerData ? parseFloat(tickerData.p) : 0}
       </Typography>
       <Typography>Total Profit: {profit}</Typography>
+      <PriceChart />
     </Card>
-    // TODO: 코인 차트 넣기
   );
 }
 
