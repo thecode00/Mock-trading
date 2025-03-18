@@ -2,22 +2,16 @@ import {
   Box,
   Button,
   Card,
-  CardActions,
   CardContent,
   CardHeader,
   Grid2,
+  Stack,
   TextField,
 } from "@mui/material";
 import { useState } from "react";
 import { useOrderStore } from "../store/orderStore";
 import { v4 as uuidv4 } from "uuid";
-
-interface OrderData {
-  type: string;
-  price: number;
-  amount: number;
-  id: string;
-}
+import { OrderData } from "../../types/order";
 
 function OrderBlock() {
   const [amount, setAmount] = useState<number>(0);
@@ -46,61 +40,69 @@ function OrderBlock() {
       <Card sx={{ height: "100%", flexGrow: 1 }}>
         <CardHeader title="Order" />
         <CardContent>
-          <Grid2 container sx={{}} spacing={2}>
-            <Grid2>
-              <TextField
-                id="amount-input"
-                name="amount"
-                label="Amount"
-                variant="outlined"
-                type="number"
-                onChange={handleChange}
-              />
+          <Stack spacing={2}>
+            <TextField
+              id="amount-input"
+              name="amount"
+              label="Amount"
+              variant="outlined"
+              type="number"
+              onChange={handleChange}
+            />
+            <TextField
+              id="price-input"
+              name="price"
+              label="Price"
+              variant="outlined"
+              type="number"
+              onChange={handleChange}
+            />
+            <Grid2 container direction={"row"} spacing={2}>
+              <Grid2
+                size={6}
+                sx={{ display: "flex", justifyContent: "center" }}
+              >
+                <Button
+                  variant="contained"
+                  color="success"
+                  sx={{ textTransform: "none" }}
+                  onClick={() => {
+                    handleOrder({
+                      type: "long",
+                      price,
+                      amount,
+                      id: uuidv4(),
+                      isOpen: false,
+                    });
+                  }}
+                >
+                  Buy/Long
+                </Button>
+              </Grid2>
+              <Grid2
+                size={6}
+                sx={{ display: "flex", justifyContent: "center" }}
+              >
+                <Button
+                  variant="contained"
+                  color="error"
+                  sx={{ textTransform: "none" }}
+                  onClick={() => {
+                    handleOrder({
+                      type: "short",
+                      price,
+                      amount,
+                      id: uuidv4(),
+                      isOpen: false,
+                    });
+                  }}
+                >
+                  Sell/Short
+                </Button>
+              </Grid2>
             </Grid2>
-            <Grid2>
-              <TextField
-                id="price-input"
-                name="price"
-                label="Price"
-                variant="outlined"
-                type="number"
-                onChange={handleChange}
-              />
-            </Grid2>
-          </Grid2>
+          </Stack>
         </CardContent>
-        <CardActions>
-          <Button
-            variant="contained"
-            color="success"
-            sx={{ textTransform: "none" }}
-            onClick={() => {
-              handleOrder({
-                type: "long",
-                price,
-                amount,
-                id: uuidv4(),
-              });
-            }}
-          >
-            Buy/Long
-          </Button>
-          <Button
-            variant="contained"
-            color="error"
-            sx={{ textTransform: "none" }}
-            onClick={() => {
-              handleOrder({
-                type: "short",
-                price,
-                amount,
-                id: uuidv4(),
-              });
-            }}
-          >
-            Sell/Short
-          </Button>
-        </CardActions>
       </Card>
     </Box>
   );

@@ -6,7 +6,7 @@ const BASE_URL = "wss://stream.binance.com:9443/ws";
 
 interface CryptoStore {
   selectedTicker: string;
-  tickerData: MessageEvent<BinanceTrade> | null;
+  tickerData: BinanceTrade | null;
   setTicker: (newTicker: string) => void;
   connectWebsocket: () => void;
   disconnectWebsocket: () => void;

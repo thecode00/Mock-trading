@@ -3,4 +3,5 @@ export interface OrderData {
   price: number;
   amount: number;
   id: string;
+  isOpen: boolean;
 }

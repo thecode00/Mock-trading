@@ -9,6 +9,7 @@ interface OrderStore {
   addOrder: (order: OrderData) => void;
   addOrderHistory: (order: OrderData) => void;
   checkOrderOpen: () => void;
+  closeOrder: (order: OrderData) => void;
 }
 
 export const useOrderStore = create<OrderStore>((set, get) => ({
@@ -42,6 +43,7 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
         ) {
           // 현재 가격보다 높게 사거나 낮게 포지션이 열릴경우 현재가격으로 수정
           item.price = price;
+          item.isOpen = true;
           set({ openPositions: [...get().openPositions, item] });
           get().addOrderHistory(item);
           return false;
@@ -49,6 +51,12 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
 
         return true;
       }),
+    });
+  },
+
+  closeOrder(order: OrderData) {
+    set({
+      openPositions: get().openPositions.filter((item) => item.id !== order.id),
     });
   },
 }));
